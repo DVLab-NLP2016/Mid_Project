@@ -1,6 +1,7 @@
 #!/bin/bash
 # Transform dic.:
 # ㄡ -> 喔
+echo "Removing redundant symbols"
 cat train.tsv | 
 tr ',~./@#$%^&*()_' ' ' |
 tr '-' ' ' | tr '+' ' ' | tr '=' ' ' |
