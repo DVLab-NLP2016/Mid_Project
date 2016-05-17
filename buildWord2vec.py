@@ -26,11 +26,11 @@ with open(sys.argv[2], 'r') as f:
         if counter % 1000 == 0:
             print "# " + str(counter)
         chars = line.split()
-        currentVec = 1
+        currentVec = 0
         for c in chars:
             decodedC = c.decode("utf-8")
             if decodedC in model.vocab:
-                currentVec *= model[decodedC]
+                currentVec += model[decodedC]
         scoreList.append(np.linalg.norm(currentVec))
         counter += 1
 
@@ -44,14 +44,14 @@ startPoint = 261955
 numberOfEmoji = 40
 counter = 0
 writeList = ['Id,Emoticon']
-while (counter + 1)* numberOfEmoji < len(scoreList):
+while (counter + 1)* numberOfEmoji <= len(scoreList):
     subList = scoreList[counter * numberOfEmoji: (counter+1) * numberOfEmoji]
-    sortSubIndex = sorted(range(len(subList)), key=lambda k : subList[k])
+    sortSubIndex = sorted(range(len(subList)), key=lambda k : subList[k], reverse = True)
     myId = startPoint + counter
     emotRank = ''
     for emotionIndex in sortSubIndex:
         emotRank += str(emotionIndex+1) + ' '
-    writeList.append(str(myId)+ ', ' + emotRank)
+    writeList.append(str(myId)+ ',' + emotRank)
     counter += 1
 
 with open('prediction.csv', 'w') as f:
